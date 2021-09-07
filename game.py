@@ -88,10 +88,10 @@ class Bola(Movil):
         self.swDerecha = True
         self.swArriba = True
     
-
+    '''
         self.incremento_x = 5
         self.incremento_y = 5
-
+    '''
 
     
     def actualizate(self):
@@ -116,6 +116,12 @@ class Bola(Movil):
             
         if self.arriba <= 0:
             self.swArriba = False
+
+    def comprobar_choque(self, algo):
+        return self.derecha >= algo.izquierda and self.izquierda <= algo.derecha and \
+                self.abajo >= algo.arriba and self.arriba <= algo.abajo
+        
+   
     '''
         if self.x + self.w > TAMANNO[0] and self.x < 0:
             self.incremento_x *= 1
@@ -175,7 +181,13 @@ class Game():
                     
             for movil in self.todos:
                 movil.procesa_eventos()
-                movil.actualizate()      
+                
+            if self.bola.comprobar_choque(self.player1) or \
+                self.bola.comprobar_choque(self.player2):
+                    self.bola.swDerecha = not selft.bola.swDerecha    
+                    
+            for movil in self.todos:
+                movil.actualizate() 
                     
             self.pantalla.fill((0, 0, 0))
             
